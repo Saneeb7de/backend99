@@ -110,24 +110,13 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 # Configure CORS for production
-allowed_origins = [
-    "http://localhost:56665",  # The origin from your error log
-    "http://localhost",
-    "http://127.0.0.1:56665",
-]
-
-# In production, we also want to allow our live frontend.
-# We read the URL from an environment variable.
-FRONTEND_URL_PRODUCTION = os.getenv("FRONTEND_URL")
-if FRONTEND_URL_PRODUCTION:
-    allowed_origins.append(FRONTEND_URL_PRODUCTION)
-
+FRONTEND_URL = os.getenv("FRONTEND_URL", "*")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,  # Use our dynamic list of origins
-    allow_credentials=True,         # Important for sending/receiving cookies or auth headers
-    allow_methods=["*"],            # Allow all methods (GET, POST, etc.)
-    allow_headers=["*"],            # Allow all headers
+    allow_origins=[FRONTEND_URL] if FRONTEND_URL != "*" else ["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
 # --- Database & Pydantic Models ---
