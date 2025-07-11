@@ -201,14 +201,30 @@ async def websocket_endpoint(websocket: WebSocket):
                     "transcript": transcript,
                     "is_final": result.is_final
                 }
-                await websocket.send_text(json.dumps(message))
+
+                # --- THE FIX ---
+                # The client might disconnect at any moment. If the websocket is closed
+                # when we try to send, just catch the exception and stop the task.
+                try:
+                    await websocket.send_text(json.dumps(message))
+                except WebSocketDisconnect:
+                    print("Could not send message, client disconnected.")
+                    break # Exit the 'async for' loop
+                except Exception as e:
+                    # Catching other potential send errors, e.g., ConnectionClosedError
+                    print(f"Error sending message to websocket: {e}")
+                    break # Exit the 'async for' loop
+                # --- END FIX ---
 
         except Exception as e:
+            # This part handles errors from the Google Speech API itself.
             error_message = f"Error during transcription: {e}"
             print(f"❌ {error_message}")
             try:
+                # Attempt to send an error message, but don't crash if this also fails.
                 await websocket.send_text(json.dumps({"error": error_message}))
             except Exception:
+                # The websocket is likely already closed, so we just ignore the error.
                 pass
 
     try:
