@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: medical-transcriber-backend
+    env: python
+    plan: starter # Note: This plan has 512MB RAM. Consider upgrading if issues persist.
+    region: oregon
+    # CORRECTED: Reduce workers to 1 to drastically lower memory usage.
+    startCommand: "gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: your-database-name # Example: Use Render's managed database
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: GOOGLE_CLOUD_CREDENTIALS_BASE64
+        sync: false # Best practice: Set this as a secret in the Render dashboard
+
+    # The build command is correct for installing FFmpeg
+    buildCommand: |
+      apt-get update && apt-get install -y ffmpeg && pip install -r requirements.txt

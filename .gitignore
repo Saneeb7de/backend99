@@ -1,0 +1,74 @@
+/venv
+.venv
+.__pycache__
+/.env
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+*.pid
+*.pkl
+*.pkl.gz
+*.egg
+__pycache__/
+/temp_audio
+backend/__pycache__/
+backend/temp_audio
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Google Cloud credentials
+gcloud.json
+*.json
+
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+
+# Temporary files
+temp_audio/
+*.tmp
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite3

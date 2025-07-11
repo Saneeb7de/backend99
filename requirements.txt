@@ -1,0 +1,16 @@
+# requirements.txt
+
+fastapi
+uvicorn
+gunicorn
+sqlalchemy[asyncio]
+asyncpg # PostgreSQL driver for SQLAlchemy asyncio
+python-dotenv
+ffmpeg-python
+google-generativeai
+aiofiles
+pydantic
+python-multipart
+google-cloud-speech==2.25.0
+uvicorn[standard]
+websockets
